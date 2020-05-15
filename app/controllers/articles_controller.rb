@@ -1,6 +1,8 @@
   class ArticlesController < ApplicationController
+
+    #DRY principle
+    before_action :set_article, only: [:show, :edit, :update, :destroy]
     def show
-      @article = Article.find(params[:id])
     end
 
     def index
@@ -12,12 +14,11 @@
     end
 
     def edit
-      @article = Article.find(params[:id])
     end
 
     def create
       #render plain: @article.inspect
-      @article = Article.new(params.required(:article).permit(:title, :description))
+      @article = Article.new(article_params)
       if @article.save
         flash[:notice] = "Article was created successfully."
         redirect_to @article  #redirect_to article_path(@article)
@@ -27,8 +28,7 @@
     end
 
     def update
-      @article = Article.find(params[:id])
-      if @article.update(params.required(:article).permit(:title, :description))
+      if @article.update(article_params)
         flash[:notice] = "Article was updated successfuly."
         redirect_to @article
       else
@@ -37,9 +37,17 @@
     end
 
     def destroy
-      @article = Article.find(params[:id])
       @article.destroy
       redirect_to articles_path
     end
-   
+
+    private
+
+    def set_article
+      @article = Article.find(params[:id])
+    end
+
+    def article_params
+      params.required(:article).permit(:title, :description)
+    end
   end
