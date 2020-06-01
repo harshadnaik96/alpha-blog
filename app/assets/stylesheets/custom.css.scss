@@ -18,15 +18,15 @@
 }
 
 #home-container {
-  margin-top: 25px;
+  margin-top: 5rem;
 }
 
 .jumbotron {
-  background-image: asset-url("image-write.jpg");
+  background-image: asset-url("image-new.jpg");
   background-position: center center;
   background-repeat: no-repeat;
   background-size: cover;
-  height: 425px;
+  height: 625px;
 }
 html,
 body {
@@ -40,4 +40,8 @@ body {
 
 #sticky-footer {
   flex-shrink: none;
+}
+
+.signup {
+  margin-top: 6rem;
 }
