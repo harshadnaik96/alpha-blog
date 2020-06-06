@@ -2,11 +2,15 @@
 
     #DRY principle
     before_action :set_article, only: [:show, :edit, :update, :destroy]
+    before_action :require_user, except: [:show, :index]
+    before_action :require_same_user, only: [:edit, :update, :destroy]
+    
     def show
     end
 
     def index
-      @articles = Article.all
+      @articles=Article.paginate(page: params[:page], per_page: 4)
+
     end
 
     def new
@@ -19,7 +23,7 @@
     def create
       #render plain: @article.inspect
       @article = Article.new(article_params)
-      @article.user = User.first
+      @article.user = current_user
       if @article.save
         flash[:notice] = "Article was created successfully."
         redirect_to @article  #redirect_to article_path(@article)
@@ -50,5 +54,12 @@
 
     def article_params
       params.required(:article).permit(:title, :description)
+    end
+
+    def require_same_user
+      if current_user != @article.user && !current_user.admin
+        flash[:alert] = "You can only edit or delete your own article"
+        redirect_to @article
+      end
     end
   end

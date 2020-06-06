@@ -5,4 +5,7 @@
     resources :articles #only: [:show, :index, :new, :create, :edit, :update, :destroy] REST-ful routes
     get 'signup', to: 'users#new'
     resources :users, except: [:new]
+    get 'login', to:'sessions#new'
+    post 'login', to: 'sessions#create'
+    delete 'logout', to: 'sessions#destroy'
   end
